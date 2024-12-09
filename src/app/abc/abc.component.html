@@ -1,0 +1,151 @@
+<div class="p-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Administración de Usuarios</h1>
+  
+    <!-- Buscador -->
+    <div class="mb-4 flex justify-between items-center">
+      <input
+        [(ngModel)]="filtro"
+        (keyup.enter)="buscarUsuario()"
+        type="text"
+        placeholder="Buscar por ID, Nombre o Apellidos"
+        class="border border-gray-300 p-2 rounded w-full md:w-1/3"
+      />
+      <button
+        (click)="buscarUsuario()"
+        class="bg-blue-500 text-white px-4 py-2 rounded ml-4 hover:bg-blue-600"
+      >
+        Buscar
+      </button>
+    </div>
+  
+    <!-- Tabla de Clientes -->
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-blue-500 text-white">
+          <th class="border border-gray-300 px-4 py-2">ID</th>
+          <th class="border border-gray-300 px-4 py-2">Nombre</th>
+          <th class="border border-gray-300 px-4 py-2">Apellidos</th>
+          <th class="border border-gray-300 px-4 py-2">Usuario</th>
+          <th class="border border-gray-300 px-4 py-2">Password</th>
+          <th class="border border-gray-300 px-4 py-2">Rol</th>
+          <th class="border border-gray-300 px-4 py-2">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios" class="text-center">
+          <td class="border border-gray-300 px-4 py-2">{{ usuario.id }}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span *ngIf="enEdicion !== usuario.id">{{ usuario.nombre }}</span>
+            <input
+              *ngIf="enEdicion === usuario.id"
+              [(ngModel)]="usuarioEditado.nombre"
+              type="text"
+              class="border border-gray-300 p-1 rounded"
+            />
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span *ngIf="enEdicion !== usuario.id">{{ usuario.apellidos }}</span>
+            <input
+              *ngIf="enEdicion === usuario.id"
+              [(ngModel)]="usuarioEditado.apellidos"
+              type="text"
+              class="border border-gray-300 p-1 rounded"
+            />
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span *ngIf="enEdicion !== usuario.id">{{ usuario.usuario }}</span>
+            <input
+              *ngIf="enEdicion === usuario.id"
+              [(ngModel)]="usuarioEditado.usuario"
+              type="text"
+              class="border border-gray-300 p-1 rounded"
+            />
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span *ngIf="enEdicion !== usuario.id">{{ usuario.password }}</span>
+            <input
+              *ngIf="enEdicion === usuario.id"
+              [(ngModel)]="usuarioEditado.password"
+              type="text"
+              class="border border-gray-300 p-1 rounded"
+            />
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span *ngIf="enEdicion !== usuario.id">{{ usuario.rol }}</span>
+            <select
+              *ngIf="enEdicion === usuario.id"
+              [(ngModel)]="usuarioEditado.rol"
+              class="border border-gray-300 p-1 rounded"
+            >
+              <option value="Programador">Programador</option>
+              <option value="Diseñador">Diseñador</option>
+              <option value="Analista">Analista</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <button
+              *ngIf="enEdicion !== usuario.id"
+              (click)="editarUsuario(usuario)"
+              class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2"
+            >
+              Editar
+            </button>
+            <button
+              *ngIf="enEdicion !== usuario.id"
+              (click)="eliminarUsuario(usuario.id)"
+              class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+            >
+              Eliminar
+            </button>
+            <button
+              *ngIf="enEdicion === usuario.id"
+              (click)="confirmarEdicion()"
+              class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mr-2"
+            >
+              Confirmar
+            </button>
+            <button
+              *ngIf="enEdicion === usuario.id"
+              (click)="cancelarEdicion()"
+              class="bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600"
+            >
+              Cancelar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Formulario para Agregar Cliente -->
+    <div class="mt-6 p-4 bg-gray-100 rounded shadow-md">
+      <h2 class="text-lg font-bold mb-4">Agregar Nuevo Cliente</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input [(ngModel)]="nuevoUsuario.nombre" type="text" placeholder="Nombre" class="border border-gray-300 p-2 rounded" />
+        <input [(ngModel)]="nuevoUsuario.apellidos" type="text" placeholder="Apellidos" class="border border-gray-300 p-2 rounded" />
+        <input [(ngModel)]="nuevoUsuario.usuario" type="text" placeholder="Usuario" class="border border-gray-300 p-2 rounded" />
+        <input [(ngModel)]="nuevoUsuario.password" type="password" placeholder="Password" class="border border-gray-300 p-2 rounded" />
+        <select [(ngModel)]="nuevoUsuario.rol" class="border border-gray-300 p-2 rounded">
+          <option value="" disabled selected>Selecciona un Rol</option>
+          <option value="Programador">Programador</option>
+          <option value="Diseñador">Diseñador</option>
+          <option value="Analista">Analista</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <input
+          *ngIf="nuevoUsuario.rol === 'Otro'"
+          [(ngModel)]="nuevoUsuario.rol"
+          type="text"
+          placeholder="Especifica el rol"
+          class="border border-gray-300 p-2 rounded"
+        />
+      </div>
+      <button
+        (click)="agregarUsuario()"
+        class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      >
+        Agregar Cliente
+      </button>
+    </div>
+  </div>
+  

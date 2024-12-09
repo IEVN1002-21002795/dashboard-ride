@@ -1,0 +1,63 @@
+<br>
+<div>
+    <h1 class="text-2xl font-bold text-center mb-6">Administración de Dashboard</h1>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+
+    <!-- Tarjeta 1: Usuarios Registrados -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Usuarios Registrados</h3>
+      <p class="text-2xl font-semibold text-blue-600">{{ totalUsuarios }}</p>
+    </div>
+  
+    <!-- Tarjeta 2: Usuarios por Tipo -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Usuarios por Tipo</h3>
+      <ul>
+        <li *ngFor="let tipo of usuariosPorTipo" class="flex justify-between">
+          <span>{{ tipo.tipo_usuario }}:</span>
+          <span class="font-semibold">{{ tipo.total }}</span>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Tarjeta 3: Usuarios Registrados Hoy -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Usuarios Registrados Hoy</h3>
+      <p class="text-2xl font-semibold text-yellow-600">{{ registradosHoy }}</p>
+    </div>
+  
+    <!-- Tarjeta 4: Usuarios Activos/Inactivos -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Usuarios Activos/Inactivos</h3>
+      <ul>
+        <li *ngFor="let status of usuariosStatus" class="flex justify-between">
+          <span>{{ status.status === 1 ? 'Activos:' : 'Inactivos:' }}</span>
+          <span class="font-semibold">{{ status.total }}</span>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Tarjeta 5: Ganancia del Día -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Ganancia del Día</h3>
+      <p class="text-2xl font-semibold text-red-600">{{ gananciaDia | currency }}</p>
+    </div>
+  
+    <!-- Tarjeta 6: Ganancia Mensual -->
+    <div class="bg-blue-50 p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+      <h3 class="text-lg font-bold">Ganancia Mensual</h3>
+      <p class="text-2xl font-semibold text-indigo-600">{{ gananciaMensual | currency }}</p>
+    </div>
+  </div>
+  
+  <!-- Botón para Actualizar Datos -->
+  <div class="flex justify-center mt-6">
+    <button
+      (click)="actualizarDatos()"
+      class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600"
+    >
+      Actualizar Datos
+    </button>
+  </div>
+  
